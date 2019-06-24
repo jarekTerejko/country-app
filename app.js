@@ -5,13 +5,28 @@ const apiEndpoint = "https://restcountries.eu/rest/v2/name/";
 
 let country;
 
-// const numberWithCommas = (x) => {
+const fixNumbersArea = (x) => {
 
-//     const num = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-//     // const num = x.toLocaleString()
-//     return num
+    // numbers with commas
+    // const num = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if(x) {
+      const num = x.toLocaleString()
+      return num + ' km&sup2';
+    }
+    return 'Data not available'
+}
 
-// }
+const fixNumbersPopulation = (x) => {
+
+  // numbers with commas
+  // const num = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  if(x) {
+    const num = x.toLocaleString()
+    return num;
+  }
+  return 'Data not available'
+}
+
 
 const fetchCountry = async searchTerm => {
   const country = await fetch(`${apiEndpoint}${searchTerm}`);
@@ -52,9 +67,9 @@ const updateUI = data => {
     <div class="col-lg-3 col-md-3 col-sm-6">
       <div class="data-cont">
         <h5>Population</h5>
-        <h3>${(x => x.toLocaleString())(country.population)}</h3>
+        <h3>${fixNumbersPopulation(country.population)}</h3>
         <h5>Area</h5>
-        <h3>${country.area} km&sup2;</h3>
+        <h3>${fixNumbersArea(country.area)}</h3>
       </div>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-6">
@@ -82,7 +97,7 @@ const updateUI = data => {
 const updateCountryName = async searchTerm => {
   const country = await fetchCountry(searchTerm);
 
-  // console.log(country);
+  console.log(country);
 
   return country;
 };
